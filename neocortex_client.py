@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __docformat__="restructuredtext"
 
-from utils.rest import RestClient, Result, ResponseFormats
+from rest import RestClient, Result, ResponseFormats
 from datetime import datetime
    
 
