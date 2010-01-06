@@ -1,7 +1,0 @@
-README
-setup.py
-src/neocortex_api_python.egg-info/PKG-INFO
-src/neocortex_api_python.egg-info/SOURCES.txt
-src/neocortex_api_python.egg-info/dependency_links.txt
-src/neocortex_api_python.egg-info/not-zip-safe
-src/neocortex_api_python.egg-info/top_level.txt
