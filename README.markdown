@@ -12,7 +12,7 @@ Wherever you are asked for input on neocortex's API mehtods it can either be an 
 
 ## Categories
 
-The categories API is available via `nc.categories`:
+Obtain a set of categories of an specific tree from your input.
 
     ca = nc.categories('yourinput', 'sometreekey')
 
@@ -28,19 +28,19 @@ Some examples for better understanding:
 
 ## Keywords
 
-The keywords API is available via `nc.keywords`:
+Obtain a set of keywords from your input.
 
     kw = nc.keywords('yourinput')
 
 ## Entities
 
-The entities API is available via `nc.entities`:
+Obtain a set of entities from your input.
 
     en = nc.entities('yourinput')
 
 ## Language
 
-The language API is available via `nc.language`:
+Obtain your input's language.
 
     la = nc.language('yourinput')
 
