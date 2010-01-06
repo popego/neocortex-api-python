@@ -44,7 +44,7 @@ The language API is available via `nc.language`:
 
     la = nc.language('yourinput')
 
-### Multifunction Requests
+## Multifunction Requests
 
 You can use this feature to obtain results of multiple api methods for the same input in one request.
 
