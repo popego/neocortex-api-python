@@ -192,7 +192,9 @@ class RestClient(object):
 
     def _req(self, method, url, data=None, headers=None):
         headers = headers or []
-        
+        data = data or {}
+        data['api_key'] = self.api_key
+
         # validate url
         if not _re_url.match(url):
             raise InvalidUrl(url)
@@ -223,6 +225,9 @@ class RestClient(object):
             if e.code not in self.POSIBLE_HTTP_CODES:
                 raise BaseRestClientError("There was an error while getting the data.")
             resp = e
+        
+            if resp.headers.gettype() == "text/plain":
+                raise ValueError(resp.read())
         
         parser = self.parsers_map.get(self._response_format, RawResponseParser())
         return parser.parse(resp.read())

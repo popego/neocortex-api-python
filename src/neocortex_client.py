@@ -6,7 +6,7 @@ from datetime import datetime
    
 
 class NeocortexRestClient(object):
-    BASE_URL = "http://brain.meaningtool.com/neocortex"
+    BASE_URL = "http://brain.meaningtool.com/0.2/neocortex"
     __builder__ = None
     
     class Builder(RestClient):
@@ -48,7 +48,7 @@ class NeocortexRestClient(object):
                     if v.has_key("additionals"):
                         for a in v["additionals"]:
                             kk = "%s+%s" % (kk, a)
-                    if v.has_key("tree_key"):
+                    if v.has_key("tree_key") and v["tree_key"] is not None:
                         self._params["tree_key"] = v["tree_key"] 
                 fs.append(kk)
             fs = ";".join(fs)
@@ -68,7 +68,7 @@ class NeocortexRestClient(object):
 
     def get_builder(self):
         if self.__builder__ is None:
-            self.__builder__ = NeocortexRestClient.Builder(self.BASE_URL)
+            self.__builder__ = NeocortexRestClient.Builder(self.BASE_URL, self.api_key)
         return self.__builder__
 
     def categories(self, input, tree_key=None, additionals=None):
