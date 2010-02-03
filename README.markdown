@@ -4,6 +4,7 @@ This is a library that implements [meaningtool's neocortex API][apidocs] in pyth
 
 All API access begins with the creation of a `NeocortexRestClient` object.  For the sake of brevity, this document assumes you've created an object called `nc` as a meaningtool endpoint:
 	
+    import neocortex_client
     nc = neocortex_client.NeocortexRestClient('myapikey')
 
 You can find your api key from your account page at [meaningtool](http://www.meaningtool.com).
