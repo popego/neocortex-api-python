@@ -15,16 +15,13 @@ _re_url = re.compile(ur"^https?://.+$")
 ## Exceptions
 ###############################################################################
 
-class BaseRestClientError(Exception):
-    message = u"There was an error while getting the data."
+class MeaningtoolError(Exception):
+    message = u"An error ocurred with the requested resource."
 
-class UnknownException(BaseRestClientError):
-    message = u"There was an unknown error while getting the data."
-
-class ResponseBodyFormatNotValid(BaseRestClientError):
+class ResponseBodyFormatNotValid(MeaningtoolError):
     message = u"The response body is not in the expected format."
     
-class InvalidParameter(BaseRestClientError):
+class InvalidParameter(MeaningtoolError):
     """ 
     Exception raised when a parameter of the client had an invalid value.
     """
@@ -38,8 +35,6 @@ class InvalidUrl(InvalidParameter):
         - the `url_hint` parameter was used.
     """
     message = u"The url is invalid."
-
-
 
 
 ###############################################################################
@@ -98,11 +93,11 @@ class ResponseParser(object):
             else:
                 return (code, message, payload, metadata)
         else:
-            self._raise_exception(code)
+            raise MeaningtoolError(message)
             
-    def _raise_exception(self, code):
+    def _raise_exception_from_code(self, code):
         if self.available_exceptions is None:
-            raise UnknownException()
+            raise MeaningtoolError()
         
         for exception in self.available_exceptions:
             if (hasattr(exception, "code") and code == exception.code) \
@@ -110,7 +105,7 @@ class ResponseParser(object):
                 or exception.__name__ == code:
                 raise exception()
             
-        raise UnknownException()
+        raise MeaningtoolError()
 
 class RawResponseParser(ResponseParser):
     def parse(self, raw):

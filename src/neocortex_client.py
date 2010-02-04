@@ -24,7 +24,7 @@ class NeocortexRestClient(object):
             self._input = self._params["input"] = text
             return self
         
-        def categories(self, tree_key=None, additionals=None):
+        def categories(self, tree_key=None, additionals=None):    
             self._functions["categories"] = dict(tree_key=tree_key or self._tree_key, additionals=additionals or [])
             return self
         
