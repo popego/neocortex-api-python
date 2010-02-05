@@ -247,12 +247,10 @@ class RestClient(object):
         try:
             resp = urllib2.urlopen(req)
         except urllib2.HTTPError, e:
-            if e.code not in self.POSIBLE_HTTP_CODES:
-                raise BaseRestClientError("There was an error while getting the data.")
             resp = e
         
             if resp.headers.gettype() == "text/plain":
-                raise ValueError(resp.read())
+                raise MeaningtoolError(resp.read())
         
         parser = self.parsers_map.get(self._response_format, RawResponseParser())
         return parser.parse(resp.read())
