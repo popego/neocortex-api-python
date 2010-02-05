@@ -19,14 +19,30 @@ class MeaningtoolError(Exception):
     message = u"An error ocurred with the requested resource."
 
 class ResponseBodyFormatNotValid(MeaningtoolError):
+    code = 1052
     message = u"The response body is not in the expected format."
+
+class APILimitsExceeded(MeaningtoolError):
+    """ 
+    Exception raised when reached the API limits.
+    """
+    code = 1053
+    message = u"API limits exceeded."
+
+class InvalidAPIKey(MeaningtoolError):
+    """ 
+    Exception raised when the API key is not valid.
+    """
+    code = 1054
+    message = u"Invalid API key."
     
 class InvalidParameter(MeaningtoolError):
     """ 
     Exception raised when a parameter of the client had an invalid value.
     """
+    code = [111, 1004]
     message = u"A parameter has an invalid value."
-
+    
 class InvalidUrl(InvalidParameter):
     """ 
     Exception raises when a url is invalid. This can be happen
@@ -34,7 +50,22 @@ class InvalidUrl(InvalidParameter):
         - the input is an url.
         - the `url_hint` parameter was used.
     """
+    code = 116
     message = u"The url is invalid."
+
+class MissingParameter(MeaningtoolError):
+    """ 
+    Exception raised when a parameter of the client is missing.
+    """
+    code = 151
+    message = u"Missing parameter."
+    
+class CategoryTreeUnavailable(MeaningtoolError):
+    """
+    Exception raised when the requested category tree is under maintanance.
+    """
+    code = 2
+    message = "Requested tree is under maintenance."
 
 
 ###############################################################################
@@ -71,7 +102,7 @@ class ResponseParser(object):
     Responsible for parse the raw API response
     """
     result_class = None
-    available_exceptions = None
+    available_exceptions = [ResponseBodyFormatNotValid, APILimitsExceeded, InvalidAPIKey, InvalidParameter, MissingParameter, InvalidUrl]
     
     def __init__(self, result_class=None, available_exceptions=None):
         self.result_class = result_class or self.result_class or Result
@@ -93,19 +124,19 @@ class ResponseParser(object):
             else:
                 return (code, message, payload, metadata)
         else:
-            raise MeaningtoolError(message)
+            self._raise_exception_from_code(code, message)
             
-    def _raise_exception_from_code(self, code):
+    def _raise_exception_from_code(self, code, message):
         if self.available_exceptions is None:
-            raise MeaningtoolError()
+            raise MeaningtoolError(message)
         
         for exception in self.available_exceptions:
-            if (hasattr(exception, "code") and code == exception.code) \
+            if (hasattr(exception, "code") and (code == exception.code or (isinstance(exception.code, list) and code in exception.code))) \
                 or (hasattr(exception, "get_code") and code == exception.get_code()) \
                 or exception.__name__ == code:
-                raise exception()
+                raise exception(message)
             
-        raise MeaningtoolError()
+        raise MeaningtoolError(message)
 
 class RawResponseParser(ResponseParser):
     def parse(self, raw):
@@ -127,7 +158,6 @@ class ResponseFormats(object):
     XML = "xml"
     JAVASCRIPT = "js"
     JSON = "json"
-
 
 
 ###############################################################################
