@@ -7,13 +7,12 @@ except ImportError:
     from ez_setup import use_setuptools
     use_setuptools()
     from setuptools import setup, find_packages, Extension
-
 import os.path
 src_folder= os.path.join(
     os.path.split(os.path.abspath(__file__))[0], 'src')
 setup(
     name='neocortex-api-python',
-    version="0.2",
+    version="0.2.1",
     description='Meaningtool Neocortex API Python Client',
     author='Popego Team',
     author_email='contact@meaningtool.com',
