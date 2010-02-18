@@ -25,7 +25,11 @@ class NeocortexRestClient(object):
             return self
         
         def categories(self, tree_key=None, additionals=None):    
-            self._functions["categories"] = dict(tree_key=tree_key or self._tree_key, additionals=additionals or [])
+            params = dict(additionals or [])
+            if tree_key is not None:
+                params.update(dict(tree_key=tree_key))
+            
+            self._functions["categories"] = params
             return self
         
         def keywords(self):
@@ -48,19 +52,24 @@ class NeocortexRestClient(object):
                     if v.has_key("additionals"):
                         for a in v["additionals"]:
                             kk = "%s+%s" % (kk, a)
-                    if v.has_key("tree_key") and v["tree_key"] is not None:
-                        self._params["tree_key"] = v["tree_key"] 
+                    if v.has_key("tree_key") and v["tree_key"] is not None and kk == 'categories':
+                        self._params["tree_key"] = v["tree_key"]
                 fs.append(kk)
             fs = ";".join(fs)
             url = "%s.%s" % (fs, self._format)
-            res = self.post(url, self._params, response_format=self._format)
-            self._reset()    
+            
+            try:
+                res = self.post(url, self._params, response_format=self._format)
+            except Exception, e:
+                raise e
+            finally:
+                self._reset()
+                
             return res
 
         def _reset(self):
             self._functions = {}
             self._params = {}
-    
 
     def __init__(self, api_key, base_url=None):
         self.api_key = api_key
@@ -68,7 +77,10 @@ class NeocortexRestClient(object):
 
     def get_builder(self):
         if self.__builder__ is None:
-            self.__builder__ = NeocortexRestClient.Builder(self.BASE_URL, self.api_key)
+            self.__builder__ = NeocortexRestClient.Builder(self.BASE_URL, self.api_key).format(ResponseFormats.JSON)
+            
+        self.__builder__._reset()
+        
         return self.__builder__
 
     def categories(self, input, tree_key=None, additionals=None):

@@ -12,7 +12,7 @@ src_folder= os.path.join(
     os.path.split(os.path.abspath(__file__))[0], 'src')
 setup(
     name='neocortex-api-python',
-    version="0.2.1",
+    version="0.2.1p4",
     description='Meaningtool Neocortex API Python Client',
     author='Popego Team',
     author_email='contact@meaningtool.com',

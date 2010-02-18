@@ -36,6 +36,13 @@ class InvalidAPIKey(MeaningtoolError):
     code = 1054
     message = u"Invalid API key."
     
+class CannotDetectLanguage(MeaningtoolError):
+    """ 
+    Exception raised when the language of the input couldn't  been detected.
+    """
+    code = 1002
+    message = u"Couldn't detect the language of the input."
+
 class InvalidParameter(MeaningtoolError):
     """ 
     Exception raised when a parameter of the client had an invalid value.
@@ -102,7 +109,7 @@ class ResponseParser(object):
     Responsible for parse the raw API response
     """
     result_class = None
-    available_exceptions = [ResponseBodyFormatNotValid, APILimitsExceeded, InvalidAPIKey, InvalidParameter, MissingParameter, InvalidUrl]
+    available_exceptions = [ResponseBodyFormatNotValid, APILimitsExceeded, InvalidAPIKey, InvalidParameter, MissingParameter, InvalidUrl, CannotDetectLanguage]
     
     def __init__(self, result_class=None, available_exceptions=None):
         self.result_class = result_class or self.result_class or Result
