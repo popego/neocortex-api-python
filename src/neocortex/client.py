@@ -6,7 +6,7 @@ from datetime import datetime
    
 
 class NeocortexRestClient(object):
-    BASE_URL = "http://brain.meaningtool.com/0.2/neocortex"
+    BASE_URL = "http://api.meaningtool.com/0.2/neocortex"
     __builder__ = None
     
     class Builder(RestClient):
