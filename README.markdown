@@ -60,6 +60,6 @@ Then you can chain any api method, for example:
 Obtaining your result from `res.payload`.
 
 [meaningtool]: http://www.meaningtool.com
-[apidocs]: http://www.meaningtool.com/developers/docs/api/rest/v0.2
+[apidocs]: http://www.meaningtool.com/developers/api
 [treedirectory]: http://www.meaningtool.com/developers/directory
 
